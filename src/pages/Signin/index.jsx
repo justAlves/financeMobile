@@ -1,9 +1,33 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { AuthContext } from '../../contexts/auth'
 
 export default function Signin() {
 
-  const [newUser, setNewUser] = useState(false)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [cPassword, setCPasword] = useState('')
+
+  const {newUser, setNewUser, signIn, authLoading} = useContext(AuthContext)
+
+  function handleLogin(){
+    if(name == '' || email == '' || password == ''){
+      Alert.alert('Ops! :(', 'Fill in all fields!')
+      return
+    }
+
+    if(cPassword !== password && newUser)
+    {
+      Alert.alert('Ops! :(','Passwords do not match.')
+      return;
+    }
+    signIn(name, email, password)
+    setName('')
+    setEmail('')
+    setPassword('')
+    setCPasword('')
+  }
 
   return (
     <View style={styles.container}>
@@ -13,30 +37,47 @@ export default function Signin() {
             style={styles.input}
             placeholder='Name'
             placeholderTextColor='#757575'
+            value={name}
+            onChangeText={text => setName(text)}
         /> : null}
 
         <TextInput
             style={styles.input}
             placeholder='Email'
             placeholderTextColor='#757575'
+            value={email}
+            onChangeText={text => setEmail(text)}
         />
 
         <TextInput
             style={styles.input}
             placeholder='Password'
             placeholderTextColor='#757575'
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
         />
 
         {newUser ? <TextInput
             style={styles.input}
             placeholder='Confirm Password'
             placeholderTextColor='#757575'
+            value={cPassword}
+            onChangeText={text => setCPasword(text)}
+            secureTextEntry
         /> : null}
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.btnText}>
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={styles.button}
+        >
+          {authLoading ? (
+            <ActivityIndicator/> ): (
+              <Text style={styles.btnText}>
             {newUser ? 'SIGNUP' : 'SIGNIN'}
-          </Text>
+              </Text>
+            )
+          }
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -63,6 +104,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       padding: 5,
       marginTop: 29,
+      color: '#FFFFFF'
     },
     button: {
       marginTop: 54,
