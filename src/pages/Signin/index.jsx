@@ -9,10 +9,13 @@ export default function Signin() {
   const [password, setPassword] = useState('')
   const [cPassword, setCPasword] = useState('')
 
-  const {newUser, setNewUser, signIn, authLoading} = useContext(AuthContext)
+  const {newUser, setNewUser, signIn, authLoading, signUp} = useContext(AuthContext)
 
   function handleLogin(){
-    if(name == '' || email == '' || password == ''){
+
+    const validations = name == '' || email == '' || password == ''
+
+    if(validations && newUser){
       Alert.alert('Ops! :(', 'Fill in all fields!')
       return
     }
@@ -22,7 +25,11 @@ export default function Signin() {
       Alert.alert('Ops! :(','Passwords do not match.')
       return;
     }
-    signIn(name, email, password)
+    if(newUser){
+      signUp(name, email, password)
+    }else{
+      signIn(email, password)
+    }
     setName('')
     setEmail('')
     setPassword('')
@@ -72,7 +79,7 @@ export default function Signin() {
           style={styles.button}
         >
           {authLoading ? (
-            <ActivityIndicator/> ): (
+            <ActivityIndicator size={20} color='#ffffff'/> ): (
               <Text style={styles.btnText}>
             {newUser ? 'SIGNUP' : 'SIGNIN'}
               </Text>
