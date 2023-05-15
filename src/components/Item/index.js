@@ -1,9 +1,39 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 
 import Feather from '@expo/vector-icons/Feather'
 
-export default function Item({data}) {
+import api from '../../services/api'
+
+export default function Item({data, setBalanceDate}) {
+
+  async function handleClick(id){
+    Alert.alert('Confirm', 'Do you want to delete the item?', [
+      {
+        text: 'No',
+        style: 'cancel'
+      },
+      {
+        text: 'Yes',
+        onPress: () => handleDelete(id)
+      }
+    ])
+  }
+
+  async function handleDelete(id){
+    try {
+      const response = await api.delete('/receives/delete', {
+        params: {
+          item_id: id
+        }
+      })
+
+      setBalanceDate(Date.now())
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
@@ -18,7 +48,7 @@ export default function Item({data}) {
         </View>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => handleClick(data.id)}>
         <Feather name='trash' size={25} color='#E0533D'/>
       </TouchableOpacity>
     </View>

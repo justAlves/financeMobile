@@ -2,12 +2,14 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Home from "../pages/Home";
 import AddItem from "../pages/AddItem";
+import DrawerHeader from "../components/DrawerHeader";
 
 const Drawer = createDrawerNavigator()
 
 function AppRoutes(){
   return(
     <Drawer.Navigator
+      drawerContent={(props) => <DrawerHeader {...props}/>}
       screenOptions={{
         headerShown: false,
         drawerStyle: {

@@ -50,7 +50,10 @@ export default function Home() {
     loadBalance()
 
     return () => isActive = false
-  }, [isFocus])
+  }, [isFocus, balanceDate])
+
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -97,7 +100,7 @@ export default function Home() {
         <FlatList
           keyExtractor={item => item.id}
           data={receives}
-          renderItem={({item}) => <Item data={item}/>}
+          renderItem={({item}) => <Item setBalanceDate={setBalanceDate} data={item}/>}
           showsVerticalScrollIndicator={false}
         />
 

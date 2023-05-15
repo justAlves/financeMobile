@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
@@ -15,6 +15,20 @@ export default function AddItem() {
   const [type, setType] = useState('receita')
   const [desc, setDesc] = useState('')
   const [value, setValue] = useState('')
+
+
+  async function handleClick(){
+    Alert.alert('Confirm', 'Do you want to continue?', [
+      {
+        text: 'No',
+        style: 'cancel'
+      },
+      {
+        text: 'Yes',
+        onPress: () => handleAdd()
+      }
+    ])
+  }
 
   async function handleAdd(){
 
@@ -61,6 +75,7 @@ export default function AddItem() {
 
 
         <View style={{flexDirection: 'row', marginTop: 39, gap: 10}}>
+
           <TouchableOpacity style={[styles.choice, type == 'receita' ? 
             {backgroundColor: '#141414', borderWidth: 2, borderColor: '#469B88'} : {backgroundColor:  '#343434'}
           ]}
@@ -69,6 +84,7 @@ export default function AddItem() {
             <Feather name='arrow-down' size={35} color='#469B88'/>
             <Text style={styles.choiceText}>Income</Text>
           </TouchableOpacity>
+
           <TouchableOpacity style={[styles.choice, type == 'despesa' ?
             {backgroundColor:  '#141414' , borderWidth: 2, borderColor: '#E0533D'} : {backgroundColor:  '#343434'}
           ]}
@@ -77,9 +93,10 @@ export default function AddItem() {
             <Feather name='arrow-up' size={35} color='#E0533D'/>
             <Text style={styles.choiceText}>Outcome</Text>
           </TouchableOpacity>
+          
         </View>
 
-        <TouchableOpacity onPress={handleAdd} style={styles.button}>
+        <TouchableOpacity onPress={handleClick} style={styles.button}>
           <Text style={styles.btnText}>Add</Text>
         </TouchableOpacity>
 
