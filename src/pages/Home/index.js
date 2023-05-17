@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Modal } from 'react-native'
 import Header from '../../components/Header'
 import { useEffect, useState, useContext } from 'react'
 
@@ -10,6 +10,7 @@ import { useIsFocused } from '@react-navigation/native'
 
 import Feather from '@expo/vector-icons/Feather'
 import Item from '../../components/Item'
+import CalendarModal from '../../components/CalendarModal'
 
 
 export default function Home() {
@@ -19,6 +20,8 @@ export default function Home() {
   const [receives, setReceives] = useState([])
 
   const [balanceDate, setBalanceDate] = useState(Date.now())
+
+  const [modal, setModal] = useState(true)
 
   const { user } = useContext(AuthContext)
 
@@ -90,7 +93,7 @@ export default function Home() {
 
       <View style={styles.listContainer}>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModal(true)}>
           <View style={styles.icon} >
             <Feather name='calendar' size={25} color='#ffffff'/>
             <Text style={{fontSize: 16, fontWeight: '600', color: '#8c8c8c'}}>Today's Movements</Text>
@@ -105,6 +108,16 @@ export default function Home() {
         />
 
       </View>
+
+      <Modal
+        visible={modal}
+        onRequestClose={() => setModal(!modal)}
+        animationType='slide'
+        transparent
+        style={styles.modal}
+      >
+        <CalendarModal/>
+      </Modal>
 
     </SafeAreaView>
   )
@@ -171,5 +184,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center'
-  }
+  },
 })
