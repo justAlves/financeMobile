@@ -21,7 +21,7 @@ export default function Home() {
 
   const [balanceDate, setBalanceDate] = useState(Date.now())
 
-  const [modal, setModal] = useState(true)
+  const [modal, setModal] = useState(false)
 
   const { user } = useContext(AuthContext)
 
@@ -47,6 +47,7 @@ export default function Home() {
       if(isActive){
         setBalance(response.data)
         setReceives(receives.data)
+        setBalanceDate(Date.now())
       }
     }
 
@@ -56,7 +57,9 @@ export default function Home() {
   }, [isFocus, balanceDate])
 
 
-
+  function filterDate(date){
+    setBalanceDate(date)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,7 +106,7 @@ export default function Home() {
         <FlatList
           keyExtractor={item => item.id}
           data={receives}
-          renderItem={({item}) => <Item setBalanceDate={setBalanceDate} data={item}/>}
+          renderItem={({item}) => <Item balanceDate={balanceDate} setBalanceDate={setBalanceDate} data={item}/>}
           showsVerticalScrollIndicator={false}
         />
 
@@ -115,8 +118,12 @@ export default function Home() {
         animationType='slide'
         transparent
         style={styles.modal}
+        
       >
-        <CalendarModal/>
+        <CalendarModal 
+          filterDate={filterDate}
+          setModal={setModal}
+        />
       </Modal>
 
     </SafeAreaView>

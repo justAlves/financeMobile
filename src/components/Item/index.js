@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather'
 
 import api from '../../services/api'
 
-export default function Item({data, setBalanceDate}) {
+export default function Item({data, setBalanceDate, balanceDate}) {
 
   async function handleClick(id){
     Alert.alert('Confirm', 'Do you want to delete the item?', [
@@ -28,7 +28,7 @@ export default function Item({data, setBalanceDate}) {
         }
       })
 
-      setBalanceDate(Date.now())
+      setBalanceDate(new Date(balanceDate))
     } catch (error) {
       
     }
